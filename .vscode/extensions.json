@@ -1,0 +1,22 @@
+{
+  "recommendations": [
+    "bierner.markdown-mermaid",
+    "bradlc.vscode-tailwindcss",
+    "charliermarsh.ruff",
+    "DavidAnson.vscode-markdownlint",
+    "EditorConfig.EditorConfig",
+    "github.vscode-github-actions",
+    "mikestead.dotenv",
+    "ms-azuretools.vscode-bicep",
+    "ms-python.debugpy",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-toolsai.jupyter",
+    "ms-vscode.azurecli",
+    "ms-vscode.makefile-tools",
+    "qwtel.sqlite-viewer",
+    "redhat.vscode-yaml",
+    "visualstudioexptteam.vscodeintellicode",
+    "wholroyd.jinja"
+  ]
+}
