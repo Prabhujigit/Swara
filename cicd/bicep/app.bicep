@@ -21,9 +21,9 @@ param promptContentFilter bool
 param searchLocation string
 param tags object
 
-var appName = 'call-center-ai'
+var appName = 'Swara'
 var prefix = deployment().name
-var appUrl = 'https://call-center-ai.${acaEnv.properties.defaultDomain}'
+var appUrl = 'https://Swara.${acaEnv.properties.defaultDomain}'
 var llmFastModelFullName = toLower('${llmFastModel}-${llmFastVersion}')
 var llmSlowModelFullName = toLower('${llmSlowModel}-${llmSlowVersion}')
 var embeddingModelFullName = toLower('${embeddingModel}-${embeddingVersion}')
@@ -206,8 +206,8 @@ resource containerApp 'Microsoft.App/containerApps@2024-02-02-preview' = {
     template: {
       containers: [
         {
-          image: 'ghcr.io/microsoft/call-center-ai:${imageVersion}'
-          name: 'call-center-ai'
+          image: 'ghcr.io/Prabhujigit/Swara:${imageVersion}'
+          name: 'Swara'
           env: [
             // App configuration
             {

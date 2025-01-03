@@ -2,17 +2,17 @@
 version_full ?= $(shell $(MAKE) --silent version-full)
 version_small ?= $(shell $(MAKE) --silent version)
 # Dev tunnels configuration
-tunnel_name := call-center-ai-$(shell hostname | sed 's/[^a-zA-Z0-9]//g' | tr '[:upper:]' '[:lower:]')
+tunnel_name := Swara-$(shell hostname | sed 's/[^a-zA-Z0-9]//g' | tr '[:upper:]' '[:lower:]')
 tunnel_url ?= $(shell res=$$(devtunnel show $(tunnel_name) | grep -o 'http[s]*://[^ ]*' | xargs) && echo $${res%/})
 # Container configuration
-container_name := ghcr.io/clemlesne/call-center-ai
+container_name := ghcr.io/Prabhujigit/Swara
 docker := docker
 image_version := main
 # App location
-cognitive_communication_location := westeurope
-default_location := swedencentral
-openai_location := swedencentral
-search_location := francecentral
+cognitive_communication_location := eastus
+default_location := eastus
+openai_location := eastus
+search_location := eastus
 # Sanitize variables
 name_sanitized := $(shell echo $(name) | tr '[:upper:]' '[:lower:]')
 # App configuration
@@ -131,7 +131,7 @@ build:
 deploy:
 	$(MAKE) deploy-bicep
 
-	@echo "🚀 Call Center AI is running on $(app_url)"
+	@echo "🚀 Swara is running on $(app_url)"
 
 	@$(MAKE) deploy-post
 
@@ -175,7 +175,7 @@ logs:
 	az containerapp logs show \
 		--follow \
 		--format text \
-		--name call-center-ai \
+		--name Swara-ai \
 		--resource-group $(name) \
 		--tail 100
 

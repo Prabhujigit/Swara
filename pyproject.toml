@@ -2,7 +2,7 @@
 description = "AI-powered call center solution with Azure and OpenAI GPT."
 dynamic = ["version"]
 license = {file = "LICENSE"}
-name = "call-center-ai"
+name = "Swara"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

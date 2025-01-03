@@ -46,4 +46,4 @@ configure_once(
 )
 
 # Framework does not exactly expose Logger, but that's easier to work with
-logger: Logger = structlog_get_logger("call-center-ai")
+logger: Logger = structlog_get_logger("Swara")

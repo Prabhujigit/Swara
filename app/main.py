@@ -79,7 +79,7 @@ from app.persistence.azure_queue_storage import (
 
 # First log
 logger.info(
-    "call-center-ai v%s",
+    "Swara v%s",
     CONFIG.version,
 )
 

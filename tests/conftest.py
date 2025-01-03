@@ -263,7 +263,7 @@ class DeepEvalAzureOpenAI(GPTModel):
     def _cache_key(self, prompt: str) -> str:
         llm_string = self._model._get_llm_string(input=prompt)
         llm_hash = hashlib.sha256(llm_string.encode(), usedforsecurity=False).digest()
-        return f"call-center-ai/{llm_hash}"
+        return f"Swara/{llm_hash}"
 
 
 class Conversation(BaseModel):

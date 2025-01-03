@@ -447,7 +447,7 @@ wheels = [
 ]
 
 [[package]]
-name = "call-center-ai"
+name = "Swara"
 version = "0.0.0"
 source = { virtual = "." }
 dependencies = [

@@ -29,10 +29,10 @@ output containerAppName string = app.outputs.containerAppName
 output logAnalyticsCustomerId string = app.outputs.logAnalyticsCustomerId
 
 var tags = {
-  application: 'call-center-ai'
+  application: 'Swara'
   instance: instance
   managed_by: 'Bicep'
-  sources: 'https://github.com/clemlesne/call-center-ai'
+  sources: 'https://github.com/Prabhujigit/Swara'
   version: imageVersion
 }
 
