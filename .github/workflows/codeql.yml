@@ -29,6 +29,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.1.7
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          submodules: 'recursive'
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3.27.0

@@ -3,15 +3,9 @@ name: Pipeline
 on:
   push:
     branches:
-      - develop
-      - feat/*
-      - hotfix/*
       - main
   pull_request:
     branches:
-      - develop
-      - feat/*
-      - hotfix/*
       - main
 
 env:
@@ -32,10 +26,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.7
         with:
-          # We need all Git history for "version.sh"
+          token: ${{ secrets.PAT_TOKEN }}
           fetch-depth: 0
-          # Ensure "version.sh" submodule are up-to-date
           submodules: recursive
+
+      # Configure Git for private repo access
+      - name: Configure Git
+        run: |
+          git config --global url."https://${{ secrets.PAT_TOKEN }}@github.com/".insteadOf "https://github.com/"
 
       - name: Generate versions
         id: version
