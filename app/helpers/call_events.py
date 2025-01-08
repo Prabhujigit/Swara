@@ -637,10 +637,10 @@ async def _intelligence_sms(
         logger.warning("Error generating SMS report")
         return
 
-    # Send the SMS to both the current caller and the policyholder
+    # Send the SMS to both the current caller and the caller
     success = False
     for number in set(
-        [call.initiate.phone_number, call.claim.get("policyholder_phone", None)]
+        [call.initiate.phone_number, call.claim.get("caller_phone", None)]
     ):
         if not number:
             continue

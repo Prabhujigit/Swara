@@ -11,11 +11,11 @@ communication_services:
   access_key: xxx
   call_queue_name: call-33612345678
   endpoint: https://xxx.france.communication.azure.com
-  phone_number: "+33612345678" # Phone number purshased from Communication Services
-  post_queue_name: post-33612345678
+  phone_number: "+18882806107" # Phone number purshased from Communication Services
+  post_queue_name: post-18882806107
   recording_container_url: https://xxx.blob.core.windows.net/recordings
   resource_id: xxx
-  sms_queue_name: sms-33612345678
+  sms_queue_name: sms-18882806107
 
 cognitive_service:
   endpoint: https://xxx.cognitiveservices.azure.com # Must be of type "AI services multi-service account"

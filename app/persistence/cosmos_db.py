@@ -270,7 +270,7 @@ class CosmosDbStore(IStore):
                 async with self._use_client() as db:
                     items = db.query_items(
                         max_item_count=1,
-                        query=f"SELECT * FROM c WHERE (STRINGEQUALS(c.initiate.phone_number, @phone_number, true) OR STRINGEQUALS(c.claim.policyholder_phone, @phone_number, true)) {extra_where} ORDER BY c.created_at DESC",
+                        query=f"SELECT * FROM c WHERE (STRINGEQUALS(c.initiate.phone_number, @phone_number, true) OR STRINGEQUALS(c.claim.caller_phone, @phone_number, true)) {extra_where} ORDER BY c.created_at DESC",
                         parameters=[
                             {
                                 "name": "@phone_number",
@@ -318,7 +318,7 @@ class CosmosDbStore(IStore):
         try:
             async with self._use_client() as db:
                 where_clause = (
-                    "WHERE STRINGEQUALS(c.initiate.phone_number, @phone_number, true) OR STRINGEQUALS(c.claim.policyholder_phone, @phone_number, true)"
+                    "WHERE STRINGEQUALS(c.initiate.phone_number, @phone_number, true) OR STRINGEQUALS(c.claim.caller_phone, @phone_number, true)"
                     if phone_number
                     else ""
                 )
@@ -354,7 +354,7 @@ class CosmosDbStore(IStore):
         try:
             async with self._use_client() as db:
                 where_clause = (
-                    "WHERE STRINGEQUALS(c.initiate.phone_number, @phone_number, true) OR STRINGEQUALS(c.claim.policyholder_phone, @phone_number, true)"
+                    "WHERE STRINGEQUALS(c.initiate.phone_number, @phone_number, true) OR STRINGEQUALS(c.claim.caller_phone, @phone_number, true)"
                     if phone_number
                     else ""
                 )

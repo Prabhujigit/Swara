@@ -69,18 +69,18 @@ class DefaultPlugin(AbstractPlugin):
         self,
     ) -> str:
         """
-        Use this if the customer wants to create a new claim.
+        Use this if the customer wants to create a new Service Ticket.
 
         # Behavior
-        1. Old claim is stored but not accessible anymore
-        2. Reset the Assistant claim
+        1. Ticket is stored but not accessible anymore
+        2. Reset the Assistant Ticket
 
         # Rules
-        - Approval from the customer must be explicitely given (e.g. 'I want to create a new claim')
+        - Approval from the customer must be explicitely given (e.g. 'I want to create a new Ticket')
         - This should be used only when the subject is totally different
 
         # Usage examples
-        - Customer wants explicitely to create a new claim
+        - Customer wants explicitely to create a new Ticket
         - Talking about a totally different subject
         """
         # Launch post-call intelligence for the current call
@@ -103,20 +103,20 @@ class DefaultPlugin(AbstractPlugin):
                 ],
             )
         )
-        return "Claim, reminders and messages reset"
+        return "Ticket, reminders and messages reset"
 
     @add_customer_response(
         [
             "A todo for next week is planned.",
             "I'm creating a reminder for the company to manage this for you.",
-            "The rendez-vous is scheduled for tomorrow.",
+            "The appointment is scheduled for tomorrow.",
         ]
     )
     async def new_or_updated_reminder(
         self,
         description: Annotated[
             str,
-            "Description of the reminder, in English. Should be detailed enough to be understood by anyone. Example: 'Call back customer to get more details about the accident', 'Send analysis report to the customer'.",
+            "Description of the reminder, in English. Should be detailed enough to be understood by anyone. Example: 'Call back customer to get more details about the details', 'Send analysis report to the customer'.",
         ],
         due_date_time: Annotated[
             str,
@@ -174,7 +174,7 @@ class DefaultPlugin(AbstractPlugin):
 
     @add_customer_response(
         [
-            "I am updating the claim with your new address.",
+            "I am updating the Ticket with your new address.",
             "The phone number is now stored in the case.",
             "Your birthdate is written down.",
         ]
@@ -203,8 +203,8 @@ class DefaultPlugin(AbstractPlugin):
             [{'field': '[field]', 'value': '[value]'}]
 
             # Examples
-            - [{'field': 'policyholder_email', 'value': 'mariejeanne@gmail.com'}]
-            - [{'field': 'policyholder_name', 'value': 'Marie-Jeanne Duchemin'}, {'field': 'policyholder_phone', 'value': '+33612345678'}]
+            - [{'field': 'caller_email', 'value': 'mariejeanne@gmail.com'}]
+            - [{'field': 'caller_name', 'value': 'Marie-Jeanne Duchemin'}, {'field': 'caller_phone', 'value': '+33612345678'}]
             """,
         ],
     ) -> str:
@@ -212,7 +212,7 @@ class DefaultPlugin(AbstractPlugin):
         Use this if the customer wants to update one or more fields in the claim.
 
         # Behavior
-        1. Update the claim with the new values
+        1. Update the Ticket with the new values
         2. Return a confirmation message
 
         # Rules
@@ -240,7 +240,7 @@ class DefaultPlugin(AbstractPlugin):
         try:
             self.call.claim[field] = new_value
             CallStateModel.model_validate(self.call)  # Force a re-validation
-            return f'Updated claim field "{field}" with value "{new_value}".'
+            return f'Updated Ticket field "{field}" with value "{new_value}".'
         # Catch error to inform LLM and rollback changes
         except ValidationError as e:
             self.call.claim[field] = old_value
