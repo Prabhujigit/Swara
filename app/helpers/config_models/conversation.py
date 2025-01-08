@@ -22,17 +22,17 @@ class WorkflowInitiateModel(BaseModel):
     bot_name: str
     service_fields: list[TelecomFieldModel] = [
         TelecomFieldModel(
-            description="Customer's full name",
+            description="Customer`s full name",
             name="customer_name",
             type="TEXT",
         ),
         TelecomFieldModel(
-            description="Customer's email address",
+            description="Customer`s email address",
             name="customer_email",
             type="EMAIL",
         ),
         TelecomFieldModel(
-            description="Customer's phone number",
+            description="Customer`s phone number",
             name="customer_phone",
             type="PHONE_NUMBER",
         ),

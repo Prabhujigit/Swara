@@ -57,7 +57,7 @@ class LlmModel(BaseModel):
         - Ask 2 questions maximum at a time
         - Be concise
         - Enumerations are allowed to be used for 3 items maximum (e.g., "First, I will ask you for your name. Second, I will ask you for your email address.")
-        - If you don't know how to respond or if you don't understand something, say "I don't know" or ask the customer to rephrase it
+        - If you don`t know how to respond or if you don`t understand something, say "I don`t know" or ask the customer to rephrase it
         - Provide a clear and concise summary of the conversation at the beginning of each call
         - Respond only if it is related to the objective or the service inquiry
         - To list things, use bullet points or numbered lists
@@ -91,7 +91,7 @@ class LlmModel(BaseModel):
         # How to handle the conversation
 
         ## New conversation
-        1. Understand the customer's situation
+        1. Understand the customer`s situation
         2. Gather information to verify identity and address
         3. Explain service plans, charges, or offers based on customer inquiry
         4. Guide the customer through any setup process (e.g., nbn® installation or mobile SIM activation)
@@ -126,7 +126,7 @@ class LlmModel(BaseModel):
 
         ## Example 4
         Conversation objective: Explain international roaming options.
-        User: action=talk I’m traveling to the UK next week. Can I use my mobile there?
+        User: action=talk I`m traveling to the UK next week. Can I use my mobile there?
         Tools: check international roaming packs
         Assistant: style=none Yes, you can use your mobile in the UK. style=none We have a 7-day International Roaming Travel Pack for $35, including 30 minutes of calls, 30 texts, and 5GB of data. Would you like me to activate it for you?
 
@@ -171,7 +171,7 @@ class LlmModel(BaseModel):
         {messages}
 
         # Response format
-        Hello, I understand [customer's situation]. I confirm [next steps]. [Salutation]. {bot_name} from {bot_company}.
+        Hello, I understand [customer`s situation]. I confirm [next steps]. [Salutation]. {bot_name} from {bot_company}.
 
         ## Example 1
         Hello, I understand you moved to 123 Main Street and need internet. I confirm nbn® is ready and we’ll activate it by tomorrow. Have a nice day! {bot_name} from {bot_company}.
@@ -190,7 +190,7 @@ class LlmModel(BaseModel):
         - Answers in English, even if the customer speaks another language
         - Be concise
         - Consider all the conversation history, from the beginning
-        - Don't make any assumptions
+        - Don`t make any assumptions
 
         # Context
 
@@ -220,7 +220,7 @@ class LlmModel(BaseModel):
         - Treat a citation as a word or a group of words
         - Use service inquiry, reminders, and messages extracts as citations
         - Use the same language as the text
-        - Won't make any assumptions
+        - Won`t make any assumptions
         - Write citations as Markdown abbreviations at the end of the text (e.g., "*[words from the text]: extract from the conversation")
 
         # Context
@@ -258,7 +258,7 @@ class LlmModel(BaseModel):
         - Answers in English, even if the customer speaks another language
         - Be concise
         - Take as priority the customer satisfaction
-        - Won't make any assumptions
+        - Won`t make any assumptions
         - Write no more than a few sentences as justification
 
         # Context
@@ -289,7 +289,7 @@ class LlmModel(BaseModel):
                 bot_phone_number=CONFIG.communication_services.phone_number,
                 date=datetime.now(call.tz()).strftime(
                     "%a %d %b %Y, %H:%M (%Z)"
-                ),  # Don't include secs to enhance cache during unit tests. Example: "Mon 15 Jul 2024, 12:43 (CEST)"
+                ),  # Don`t include secs to enhance cache during unit tests. Example: "Mon 15 Jul 2024, 12:43 (CEST)"
                 phone_number=call.initiate.phone_number,
             )
         )
@@ -454,44 +454,44 @@ class LlmModel(BaseModel):
 class TtsModel(BaseModel):
     tts_lang: str = "en-US"
     calltransfer_failure_tpl: list[str] = [
-        "It seems I can't connect you with an agent at the moment, but the next available agent will call you back as soon as possible.",
-        "I'm unable to connect you with an agent right now, but someone will get back to you shortly.",
-        "Sorry, no agents are available. We'll call you back soon.",
+        "It seems I can`t connect you with an agent at the moment, but the next available agent will call you back as soon as possible.",
+        "I`m unable to connect you with an agent right now, but someone will get back to you shortly.",
+        "Sorry, no agents are available. We`ll call you back soon.",
     ]
     connect_agent_tpl: list[str] = [
-        "I'm sorry, I wasn't able to respond to your request. Please allow me to transfer you to an agent who can assist you further. Please stay on the line and I will get back to you shortly.",
+        "I`m sorry, I wasn`t able to respond to your request. Please allow me to transfer you to an agent who can assist you further. Please stay on the line and I will get back to you shortly.",
         "I apologize for not being able to assist you. Let me connect you to an agent who can help. Please hold on.",
-        "Sorry for the inconvenience. I'll transfer you to an agent now. Please hold.",
+        "Sorry for the inconvenience. I`ll transfer you to an agent now. Please hold.",
     ]
     end_call_to_connect_agent_tpl: list[str] = [
         "Of course, stay on the line. I will transfer you to an agent.",
-        "Sure, please hold on. I'll connect you to an agent.",
-        "Hold on, I'll transfer you now.",
+        "Sure, please hold on. I`ll connect you to an agent.",
+        "Hold on, I`ll transfer you now.",
     ]
     error_tpl: list[str] = [
-        "I'm sorry, I didn't understand. Can you rephrase?",
-        "I didn't catch that. Could you say it differently?",
+        "I`m sorry, I didn`t understand. Can you rephrase?",
+        "I didn`t catch that. Could you say it differently?",
         "Please repeat that.",
     ]
     goodbye_tpl: list[str] = [
-        "Thank you for calling, I hope I've been able to help. You can call back, I've got it all memorized. {bot_company} wishes you a wonderful day!",
+        "Thank you for calling, I hope I`ve been able to help. You can call back, I`ve got it all memorized. {bot_company} wishes you a wonderful day!",
         "It was a pleasure assisting you today. Remember, {bot_company} is always here to help. Have a fantastic day!",
         "Thanks for reaching out! {bot_company} appreciates you. Have a great day!",
     ]
     hello_tpl: list[str] = [
-        "Hello, I'm {bot_name}, the virtual assistant from {bot_company}! Here's how I work: while I'm processing your information, you will hear music. Feel free to speak to me in a natural way - I'm designed to understand your requests. During the conversation, you can also send me text messages.",
-        "Hi there! I'm {bot_name} from {bot_company}. While I process your info, you'll hear some music. Just talk to me naturally, and you can also send text messages.",
-        "Hello! I'm {bot_name} from {bot_company}. Speak naturally, and you can also text me.",
+        "Hello, I`m {bot_name}, the virtual assistant from {bot_company}! Here`s how I work: while I`m processing your information, you will hear music. Feel free to speak to me in a natural way - I`m designed to understand your requests. During the conversation, you can also send me text messages.",
+        "Hi there! I`m {bot_name} from {bot_company}. While I process your info, you`ll hear some music. Just talk to me naturally, and you can also send text messages.",
+        "Hello! I`m {bot_name} from {bot_company}. Speak naturally, and you can also text me.",
     ]
     timeout_silence_tpl: list[str] = [
-        "I'm sorry, I didn't hear anything. If you need help, let me know how I can help you.",
+        "I`m sorry, I didn`t hear anything. If you need help, let me know how I can help you.",
         "It seems quiet on your end. How can I assist you?",
-        "I didn't catch that. How can I help?",
+        "I didn`t catch that. How can I help?",
     ]
     timeout_loading_tpl: list[str] = [
-        "It's taking me longer than expected to reply. Thank you for your patience…",
-        "I'm working on your request. Thanks for waiting!",
-        "Please hold on, I'm almost done.",
+        "It`s taking me longer than expected to reply. Thank you for your patience…",
+        "I`m working on your request. Thanks for waiting!",
+        "Please hold on, I`m almost done.",
     ]
     ivr_language_tpl: list[str] = [
         "To continue in {label}, press {index}.",

@@ -14,7 +14,7 @@ class ClaimTypeEnum(str, Enum):
     """Validated as a string."""
 
 
-class ClaimFieldModel(BaseModel):
+class TelecomFieldModel(BaseModel):
     description: str | None = None
     name: str
     type: ClaimTypeEnum
