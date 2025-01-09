@@ -19,7 +19,7 @@ communication_services:
 
 cognitive_service:
   endpoint: https://xxx.cognitiveservices.azure.com # Must be of type "AI services multi-service account"
-  region: swedencentral
+  region: eastus
   resource_id: xxx
 
 llm:

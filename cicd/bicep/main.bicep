@@ -2,19 +2,19 @@ param cognitiveCommunicationLocation string
 param embeddingDeploymentType string = 'Standard' // Pay-as-you-go in a single region
 param embeddingDimensions int = 3072
 param embeddingModel string = 'text-embedding-3-large'
-param embeddingQuota int = 50
+param embeddingQuota int = 30
 param embeddingVersion string = '1'
-param imageVersion string = 'main'
+param imageVersion string = 'sha-4029c53'
 param instance string
 param llmFastContext int = 128000
 param llmFastDeploymentType string = 'GlobalStandard' // Pay-as-you-go in all regions
 param llmFastModel string = 'gpt-4o-mini'
-param llmFastQuota int = 50
+param llmFastQuota int = 30
 param llmFastVersion string = '2024-07-18'
 param llmSlowContext int = 128000
 param llmSlowDeploymentType string = 'GlobalStandard' // Pay-as-you-go in all regions
 param llmSlowModel string = 'gpt-4o'
-param llmSlowQuota int = 50
+param llmSlowQuota int = 30
 param llmSlowVersion string = '2024-08-06'
 param location string = deployment().location
 param openaiLocation string

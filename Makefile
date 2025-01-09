@@ -2,12 +2,13 @@
 version_full ?= $(shell $(MAKE) --silent version-full)
 version_small ?= $(shell $(MAKE) --silent version)
 # Dev tunnels configuration
-tunnel_name := Swara-$(shell hostname | sed 's/[^a-zA-Z0-9]//g' | tr '[:upper:]' '[:lower:]')
+tunnel_name := call-center-ai-$(shell hostname | sed 's/[^a-zA-Z0-9]//g' | tr '[:upper:]' '[:lower:]')
 tunnel_url ?= $(shell res=$$(devtunnel show $(tunnel_name) | grep -o 'http[s]*://[^ ]*' | xargs) && echo $${res%/})
 # Container configuration
 container_name := ghcr.io/Prabhujigit/Swara
 docker := docker
-image_version := main
+image_version := sha-4029c53
+
 # App location
 cognitive_communication_location := eastus
 default_location := eastus
@@ -24,33 +25,33 @@ app_url ?= $(shell az deployment sub show --name $(name_sanitized) | yq '.proper
 blob_storage_public_name ?= $(shell az deployment sub show --name $(name_sanitized) | yq '.properties.outputs["blobStoragePublicName"].value')
 container_app_name ?= $(shell az deployment sub show --name $(name_sanitized) | yq '.properties.outputs["containerAppName"].value')
 
-version:
-	@bash ./cicd/version/version.sh -g . -c
+# version:
+# 	@bash ./cicd/version/version.sh -g . -c
 
-version-full:
-	@bash ./cicd/version/version.sh -g . -c -m
+# version-full:
+# 	@bash ./cicd/version/version.sh -g . -c -m
 
-brew:
-	@echo "➡️ Installing yq..."
-	brew install yq
+# brew:
+# 	@echo "➡️ Installing yq..."
+# 	brew install yq
 
-	@echo "➡️ Installing Azure CLI..."
-	brew install azure-cli
+# 	@echo "➡️ Installing Azure CLI..."
+# 	brew install azure-cli
 
-	@echo "➡️ Installing pyenv..."
-	brew install pyenv
+# 	@echo "➡️ Installing pyenv..."
+# 	brew install pyenv
 
-	@echo "➡️ Installing Rust..."
-	brew install rust
+# 	@echo "➡️ Installing Rust..."
+# 	brew install rust
 
-	@echo "➡️ Installing Azure Dev tunnels..."
-	curl -sL https://aka.ms/DevTunnelCliInstall | bash
+# 	@echo "➡️ Installing Azure Dev tunnels..."
+# 	curl -sL https://aka.ms/DevTunnelCliInstall | bash
 
-	@echo "➡️ Installing Twilio CLI..."
-	brew tap twilio/brew && brew install twilio
+# 	@echo "➡️ Installing Twilio CLI..."
+# 	brew tap twilio/brew && brew install twilio
 
-	@echo "➡️ Installing uv..."
-	brew install uv
+# 	@echo "➡️ Installing uv..."
+# 	brew install uv
 
 install:
 	@echo "➡️ Installing venv..."
@@ -131,7 +132,7 @@ build:
 deploy:
 	$(MAKE) deploy-bicep
 
-	@echo "🚀 Swara is running on $(app_url)"
+	@echo "🚀 Call Center AI is running on $(app_url)"
 
 	@$(MAKE) deploy-post
 
@@ -175,7 +176,7 @@ logs:
 	az containerapp logs show \
 		--follow \
 		--format text \
-		--name Swara-ai \
+		--name call-center-ai \
 		--resource-group $(name) \
 		--tail 100
 
