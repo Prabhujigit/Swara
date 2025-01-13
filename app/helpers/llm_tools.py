@@ -25,7 +25,7 @@ _search = CONFIG.ai_search.instance()
 _sms = CONFIG.sms.instance()
 
 
-class UpdateClaimDict(TypedDict):
+class UpdateInquiryDict(TypedDict):
     field: str
     value: str
 
@@ -65,14 +65,14 @@ class DefaultPlugin(AbstractPlugin):
             "We'll start a case.",
         ]
     )
-    async def new_claim(
+    async def new_inquiry(
         self,
     ) -> str:
         """
         Use this if the customer wants to create a new Service Ticket.
 
         # Behavior
-        1. Ticket is stored but not accessible anymore
+        1. Old Ticket is stored but not accessible anymore
         2. Reset the Assistant Ticket
 
         # Rules
@@ -86,7 +86,7 @@ class DefaultPlugin(AbstractPlugin):
         # Launch post-call intelligence for the current call
         await self.post_callback(self.call)
 
-        # Store the last message and use it at first message of the new claim
+        # Store the last message and use it at first message of the new inquiry
         self.call = await _db.call_create(
             CallStateModel(
                 initiate=self.call.initiate.model_copy(),
@@ -98,7 +98,7 @@ class DefaultPlugin(AbstractPlugin):
                         content="",
                         persona=MessagePersonaEnum.HUMAN,
                     ),
-                    # Reinsert the last message, using more will add the user message asking to create the new claim and the assistant can loop on it sometimes
+                    # Reinsert the last message, using more will add the user message asking to create the new inquiry and the assistant can loop on it sometimes
                     self.call.messages[-1],
                 ],
             )
@@ -124,7 +124,7 @@ class DefaultPlugin(AbstractPlugin):
         ],
         owner: Annotated[
             str,
-            "The owner of the reminder, in English. Can be 'customer', 'assistant', or a third party from the claim. Try to be as specific as possible, with a name. Example: 'customer', 'assistant', 'contact', 'witness', 'police'.",
+            "The owner of the reminder, in English. Can be 'customer', 'assistant', or a third party from the inquiry. Try to be as specific as possible, with a name. Example: 'customer', 'assistant', 'contact', 'witness', 'police'.",
         ],
         title: Annotated[
             str,
@@ -179,15 +179,15 @@ class DefaultPlugin(AbstractPlugin):
             "Your birthdate is written down.",
         ]
     )
-    async def updated_claim(
+    async def updated_inquiry(
         self,
         updates: Annotated[
-            list[UpdateClaimDict],
+            list[UpdateInquiryDict],
             """
             The field to update, in English.
 
             # Available fields
-            {% for field in call.initiate.claim %}
+            {% for field in call.initiate.inquiry %}
             {% if not field.description %}
             - {{ field.name }}
             {% else %}
@@ -203,13 +203,13 @@ class DefaultPlugin(AbstractPlugin):
             [{'field': '[field]', 'value': '[value]'}]
 
             # Examples
-            - [{'field': 'caller_email', 'value': 'mariejeanne@gmail.com'}]
-            - [{'field': 'caller_name', 'value': 'Marie-Jeanne Duchemin'}, {'field': 'caller_phone', 'value': '+33612345678'}]
+            - [{'field': 'customer_email', 'value': 'mariejeanne@gmail.com'}]
+            - [{'field': 'customer_name', 'value': 'Marie-Jeanne Duchemin'}, {'field': 'customer_phone', 'value': '+33612345678'}]
             """,
         ],
     ) -> str:
         """
-        Use this if the customer wants to update one or more fields in the claim.
+        Use this if the customer wants to update one or more fields in the inquiry.
 
         # Behavior
         1. Update the Ticket with the new values
@@ -223,27 +223,27 @@ class DefaultPlugin(AbstractPlugin):
         - Change the incident date
         - Correct the name of the customer
         - Store details about the conversation
-        - Update the claim with a new phone number
+        - Update the inquiry with a new phone number
         """
-        # Update all claim fields
+        # Update all inquiry fields
         res = "# Updated fields"
         for field in updates:
-            res += f"\n- {self._update_claim_field(field)}"
+            res += f"\n- {self._update_inquiry_field(field)}"
         return res
 
-    def _update_claim_field(self, update: UpdateClaimDict) -> str:
+    def _update_inquiry_field(self, update: UpdateInquiryDict) -> str:
         field = update["field"]
         new_value = update["value"]
 
         # Update field
-        old_value = self.call.claim.get(field, None)
+        old_value = self.call.inquiry.get(field, None)
         try:
-            self.call.claim[field] = new_value
+            self.call.inquiry[field] = new_value
             CallStateModel.model_validate(self.call)  # Force a re-validation
             return f'Updated Ticket field "{field}" with value "{new_value}".'
         # Catch error to inform LLM and rollback changes
         except ValidationError as e:
-            self.call.claim[field] = old_value
+            self.call.inquiry[field] = old_value
             return f'Failed to edit field "{field}": {e.json()}'
 
     @add_customer_response(

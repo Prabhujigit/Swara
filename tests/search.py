@@ -122,7 +122,7 @@ class RagRelevancyMetric(BaseMetric):
 @pytest.mark.repeat(10)  # Catch multi-threading and concurrency issues
 async def test_relevancy(  # noqa: PLR0913
     call: CallStateModel,
-    claim_tests_excl: list[str],  # noqa: ARG001
+    inquiry_tests_excl: list[str],  # noqa: ARG001
     deepeval_model: GPTModel,
     expected_output: str,  # noqa: ARG001
     speeches: list[str],

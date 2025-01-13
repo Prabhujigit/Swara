@@ -263,11 +263,11 @@ class DeepEvalAzureOpenAI(GPTModel):
     def _cache_key(self, prompt: str) -> str:
         llm_string = self._model._get_llm_string(input=prompt)
         llm_hash = hashlib.sha256(llm_string.encode(), usedforsecurity=False).digest()
-        return f"Swara/{llm_hash}"
+        return f"swaravatexa/{llm_hash}"
 
 
 class Conversation(BaseModel):
-    claim_tests_excl: list[str] = []
+    inquiry_tests_excl: list[str] = []
     expected_output: str
     id: str
     speeches: list[str]

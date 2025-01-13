@@ -35,7 +35,7 @@ class CallGetModel(BaseModel):
     # Editable fields
     in_progress: bool = False
     initiate: CallInitiateModel = Field(frozen=True)
-    claim: dict[
+    inquiry: dict[
         str, Any
     ] = {}  # Place after "initiate" as it depends on it for validation
     messages: list[MessageModel] = []
@@ -43,20 +43,20 @@ class CallGetModel(BaseModel):
     reminders: list[ReminderModel] = []
     synthesis: SynthesisModel | None = None
 
-    @field_validator("claim")
+    @field_validator("inquiry")
     @classmethod
-    def _validate_claim(
-        cls, claim: dict[str, Any] | None, info: ValidationInfo
+    def _validate_inquiry(
+        cls, inquiry: dict[str, Any] | None, info: ValidationInfo
     ) -> dict[str, Any]:
         """
-        Validate the claim field against the initiate data model.
+        Validate the inquiry field against the initiate data model.
         """
         initiate: CallInitiateModel | None = info.data.get("initiate", None)
         if not initiate:
             return {}
         return (
-            initiate.claim_model()
-            .model_validate(claim)
+            initiate.inquiry_model()
+            .model_validate(inquiry)
             .model_dump(
                 exclude_none=True,
                 mode="json",  # Field must be serialized as JSON in other parts of the code

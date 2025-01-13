@@ -21,9 +21,9 @@ param promptContentFilter bool
 param searchLocation string
 param tags object
 
-var appName = 'Swara'
+var appName = 'swaravatexa'
 var prefix = deployment().name
-var appUrl = 'https://Swara.${acaEnv.properties.defaultDomain}'
+var appUrl = 'https://swaravatexa.${acaEnv.properties.defaultDomain}'
 var llmFastModelFullName = toLower('${llmFastModel}-${llmFastVersion}')
 var llmSlowModelFullName = toLower('${llmSlowModel}-${llmSlowVersion}')
 var embeddingModelFullName = toLower('${embeddingModel}-${embeddingVersion}')
@@ -206,8 +206,8 @@ resource containerApp 'Microsoft.App/containerApps@2024-02-02-preview' = {
     template: {
       containers: [
         {
-          image: 'ghcr.io/Prabhujigit/Swara:${imageVersion}'
-          name: 'Swara'
+          image: 'ghcr.io/prabhujigit/swara:${imageVersion}'
+          name: 'swara'
           env: [
             // App configuration
             {
@@ -284,7 +284,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   }
   kind: 'StorageV2'
   properties: {
-    allowSharedKeyAccess: false
+    allowSharedKeyAccess: true
     supportsHttpsTrafficOnly: true
   }
 }
@@ -759,7 +759,7 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
             ]
           }
           {
-            path: '/claim/policyholder_phone/?'
+            path: '/customer/customer_phone/?'
             indexes: [
               {
                 dataType: 'String'

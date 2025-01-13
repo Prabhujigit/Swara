@@ -1,50 +1,44 @@
-param cognitiveCommunicationLocation string
-param embeddingDeploymentType string = 'Standard' // Pay-as-you-go in a single region
-param embeddingDimensions int = 3072
-param embeddingModel string = 'text-embedding-3-large'
-param embeddingQuota int = 30
-param embeddingVersion string = '1'
-param imageVersion string = 'sha-4029c53'
-param instance string
-param llmFastContext int = 128000
-param llmFastDeploymentType string = 'GlobalStandard' // Pay-as-you-go in all regions
-param llmFastModel string = 'gpt-4o-mini'
-param llmFastQuota int = 30
-param llmFastVersion string = '2024-07-18'
-param llmSlowContext int = 128000
-param llmSlowDeploymentType string = 'GlobalStandard' // Pay-as-you-go in all regions
-param llmSlowModel string = 'gpt-4o'
-param llmSlowQuota int = 30
-param llmSlowVersion string = '2024-08-06'
-param location string = deployment().location
-param openaiLocation string
-param promptContentFilter bool = true // Should be set to false but requires a custom approval from Microsoft
-param searchLocation string
-
 targetScope = 'subscription'
 
-output appUrl string = app.outputs.appUrl
-output blobStoragePublicName string = app.outputs.blobStoragePublicName
-output containerAppName string = app.outputs.containerAppName
-output logAnalyticsCustomerId string = app.outputs.logAnalyticsCustomerId
+param cognitiveCommunicationLocation string
+param embeddingDeploymentType string = 'Standard'
+param embeddingDimensions int = 3072
+param embeddingModel string = 'text-embedding-3-large'
+param embeddingQuota int = 4
+param embeddingVersion string = '1'
+param imageVersion string
+param instance string
+param llmFastContext int = 128000
+param llmFastDeploymentType string = 'GlobalStandard'
+param llmFastModel string = 'gpt-4o-mini'
+param llmFastQuota int = 4
+param llmFastVersion string = '2024-07-18'
+param llmSlowContext int = 128000
+param llmSlowDeploymentType string = 'GlobalStandard'
+param llmSlowModel string = 'gpt-4o'
+param llmSlowQuota int = 2
+param llmSlowVersion string = '2024-08-06'
+param openaiLocation string
+param promptContentFilter bool = true
+param searchLocation string
+param resourceGroupName string
+param location string = deployment().location
 
 var tags = {
-  application: 'Swara'
+  application: 'swaravatexa'
   instance: instance
   managed_by: 'Bicep'
-  sources: 'https://github.com/Prabhujigit/Swara'
+  sources: 'https://github.com/prabhujigit/swara'
   version: imageVersion
 }
 
-resource sub 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  location: location
-  name: instance
-  tags: tags
+resource existingRG 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
+  name: resourceGroupName
 }
 
 module app 'app.bicep' = {
   name: instance
-  scope: sub
+  scope: existingRG
   params: {
     cognitiveCommunicationLocation: cognitiveCommunicationLocation
     embeddingDeploymentType: embeddingDeploymentType
@@ -70,3 +64,8 @@ module app 'app.bicep' = {
     tags: tags
   }
 }
+
+output appUrl string = app.outputs.appUrl
+output blobStoragePublicName string = app.outputs.blobStoragePublicName
+output containerAppName string = app.outputs.containerAppName
+output logAnalyticsCustomerId string = app.outputs.logAnalyticsCustomerId

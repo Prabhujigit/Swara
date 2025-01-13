@@ -1,7 +1,7 @@
 {% extends "templates/base.html.jinja" %}
 
 {% block title %}
-Claim ({{ call.initiate.phone_number }})
+inquiry ({{ call.initiate.phone_number }})
 {% endblock %}
 
 {% block content %}
@@ -16,8 +16,8 @@ Claim ({{ call.initiate.phone_number }})
     </a>
   </div>
 
-  <h1>Hello {{ (call.claim.caller_name | title) if call.claim.caller_name else '' }}&nbsp;&nbsp;👋🏻</h1>
-  <p class="text-2xl">Your claim {{ ('about ' ~ call.synthesis.short | lower) if call.synthesis.short }} is being processed.</p>
+  <h1>Hello {{ (call.inquiry.customer_name | title) if call.inquiry.customer_name else '' }}&nbsp;&nbsp;👋🏻</h1>
+  <p class="text-2xl">Your inquiry {{ ('about ' ~ call.synthesis.short | lower) if call.synthesis.short }} is being processed.</p>
 </header>
 
 <!-- Long synthesis -->
@@ -43,7 +43,7 @@ Claim ({{ call.initiate.phone_number }})
     <div class="overflow-hidden space-y-6">
       {% for message in call.messages | sort(attribute='created_at') %}
         {% if not (message.action == 'talk' and not message.content) %}
-        {% set name = bot_name if message.persona == 'assistant' else (call.claim.caller_name or 'Customer') %}
+        {% set name = bot_name if message.persona == 'assistant' else (call.inquiry.customer_name or 'Customer') %}
         <div class="flex flex-row">
           <div class="basis-6 relative self-stretch">
             <div class="absolute top-0 left-0 w-full h-full -z-10">
@@ -185,19 +185,19 @@ Claim ({{ call.initiate.phone_number }})
           set details = [
             {
               'title': 'Date',
-              'value': call.claim.incident_date_time.strftime('%a %d %b %Y, %H:%M (%Z)') if call.claim.incident_date_time else 'N/A'
+              'value': call.inquiry.incident_date_time.strftime('%a %d %b %Y, %H:%M (%Z)') if call.inquiry.incident_date_time else 'N/A'
             },
             {
               'title': 'Location',
-              'value': call.claim.incident_location or 'N/A'
+              'value': call.inquiry.incident_location or 'N/A'
             },
             {
               'title': 'Ticket',
-              'value': call.claim.Ticket_number or 'N/A'
+              'value': call.inquiry.Ticket_number or 'N/A'
             },
             {
               'title': 'Contact',
-              'value': (call.claim.caller_email or 'N/A') ~ ', ' ~ (call.claim.caller_phone or 'N/A')
+              'value': (call.inquiry.customer_email or 'N/A') ~ ', ' ~ (call.inquiry.customer_phone or 'N/A')
             },
             {
               'title': 'Phone used',

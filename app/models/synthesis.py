@@ -23,7 +23,7 @@ class SynthesisModel(BaseModel):
         # Rules
         - Do not include details of the call process
         - Do not include personal details (e.g., name, phone number, address)
-        - Include details stored in the claim, to make the customer confident that the situation is understood
+        - Include details stored in the inquiry, to make the customer confident that the situation is understood
         - Prefer including details about the situation (e.g., what, when, where, how)
         - Say "you" to refer to the customer, and "I" to refer to the assistant
         - Use Markdown syntax to format the message with paragraphs, bold text, and URL

@@ -640,7 +640,7 @@ async def _intelligence_sms(
     # Send the SMS to both the current caller and the caller
     success = False
     for number in set(
-        [call.initiate.phone_number, call.claim.get("caller_phone", None)]
+        [call.initiate.phone_number, call.inquiry.get("customer_phone", None)]
     ):
         if not number:
             continue

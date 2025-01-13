@@ -307,7 +307,7 @@ class LlmModel(BaseModel):
                 self.chat_system_tpl,
                 actions=", ".join([action.value for action in MessageActionEnum]),
                 bot_company=call.initiate.bot_company,
-                claim=json.dumps(call.claim),
+                inquiry=json.dumps(call.inquiry),
                 default_lang=call.lang.human_name,
                 reminders=TypeAdapter(list[ReminderModel])
                 .dump_json(call.reminders, exclude_none=True)
@@ -327,7 +327,7 @@ class LlmModel(BaseModel):
                 self.sms_summary_system_tpl,
                 bot_company=call.initiate.bot_company,
                 bot_name=call.initiate.bot_name,
-                claim=json.dumps(call.claim),
+                inquiry=json.dumps(call.inquiry),
                 default_lang=call.lang.human_name,
                 messages=TypeAdapter(list[MessageModel])
                 .dump_json(call.messages, exclude_none=True)
@@ -346,7 +346,7 @@ class LlmModel(BaseModel):
         return self._messages(
             self._format(
                 self.synthesis_system_tpl,
-                claim=json.dumps(call.claim),
+                inquiry=json.dumps(call.inquiry),
                 format=json.dumps(SynthesisModel.model_json_schema()),
                 messages=TypeAdapter(list[MessageModel])
                 .dump_json(call.messages, exclude_none=True)
@@ -370,7 +370,7 @@ class LlmModel(BaseModel):
         return self._messages(
             self._format(
                 self.citations_system_tpl,
-                claim=json.dumps(call.claim),
+                inquiry=json.dumps(call.inquiry),
                 reminders=TypeAdapter(list[ReminderModel])
                 .dump_json(call.reminders, exclude_none=True)
                 .decode(),
@@ -385,7 +385,7 @@ class LlmModel(BaseModel):
         return self._messages(
             self._format(
                 self.next_system_tpl,
-                claim=json.dumps(call.claim),
+                inquiry=json.dumps(call.inquiry),
                 format=json.dumps(NextModel.model_json_schema()),
                 messages=TypeAdapter(list[MessageModel])
                 .dump_json(call.messages, exclude_none=True)

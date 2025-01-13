@@ -79,7 +79,7 @@ from app.persistence.azure_queue_storage import (
 
 # First log
 logger.info(
-    "Swara v%s",
+    "swaravatexa v%s",  
     CONFIG.version,
 )
 
@@ -166,15 +166,15 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
 # FastAPI
 api = FastAPI(
     contact={
-        "url": "admin@vatexa.com",
+        "url": "admin@udshaa.com",
     },
     description="Send a phone call from AI agent. Or, directly call the bot from the configured phone number!",
     license_info={
-        "name": "Vatexa all right resvered",
-        "url": "https://vatexa.com",
+        "name": "Udshaa all right resvered",
+        "url": "https://udshaa.com",
     },
     lifespan=lifespan,
-    title="SWAR",
+    title="SWARA",
     version=CONFIG.version,
 )
 

@@ -40,7 +40,7 @@ from tests.conftest import (
 )
 
 
-class ClaimRelevancyMetric(BaseMetric):
+class InquiryRelevancyMetric(BaseMetric):
     call: CallStateModel
     model: GPTModel
 
@@ -69,21 +69,21 @@ class ClaimRelevancyMetric(BaseMetric):
         **kwargs,  # noqa: ARG002
     ) -> float:
         assert test_case.input
-        # Extract claim data
-        extracts = await self._extract_claim_theory(test_case.input)
-        logger.info("Extracted claim data: %s", extracts)
-        # Measure each claim in parallel
+        # Extract inquiry data
+        extracts = await self._extract_inquiry_theory(test_case.input)
+        logger.info("Extracted inquiry data: %s", extracts)
+        # Measure each inquiry in parallel
         scores = await asyncio.gather(
             *[
                 self._score_data(
                     key=key,
                     throry=value,
-                    real=str(self.call.claim.get(key, None)),
+                    real=str(self.call.inquiry.get(key, None)),
                 )
                 for key, value in extracts.items()
             ]
         )
-        logger.info("Claim scores: %s", scores)
+        logger.info("inquiry scores: %s", scores)
         # Score is the average
         self.score = sum(scores) / len(scores) if len(extracts) > 0 else 1
         # Test against the threshold
@@ -161,7 +161,7 @@ class ClaimRelevancyMetric(BaseMetric):
             raise ValueError(f"LLM response is not a number: {res}") from e
         return score
 
-    async def _extract_claim_theory(self, conversation: str) -> dict[str, str]:
+    async def _extract_inquiry_theory(self, conversation: str) -> dict[str, str]:
         res, _ = await self.model.a_generate(
             f"""
             Assistant is a data analyst expert with 20 years of experience.
@@ -180,7 +180,7 @@ class ClaimRelevancyMetric(BaseMetric):
             - Respond only with the JSON object, nothing else
 
             # Fields
-            {", ".join([f"{field.name} ({field.type.value})" for field in self.call.initiate.claim])}
+            {", ".join([f"{field.name} ({field.type.value})" for field in self.call.initiate.inquiry])}
 
             # Conversation
             {conversation}
@@ -222,8 +222,8 @@ class ClaimRelevancyMetric(BaseMetric):
             if "value" in extract
             and "key" in extract
             and any(
-                claim_field.name == extract["key"]
-                for claim_field in self.call.initiate.claim
+                inquiry_field.name == extract["key"]
+                for inquiry_field in self.call.initiate.inquiry
             )
         }
 
@@ -232,14 +232,14 @@ class ClaimRelevancyMetric(BaseMetric):
 
     @property
     def __name__(self):  # pyright: ignore
-        return "Claim Relevancy"
+        return "inquiry Relevancy"
 
 
 @with_conversations
 @pytest.mark.asyncio(loop_scope="session")
 async def test_llm(  # noqa: PLR0913
     call: CallStateModel,
-    claim_tests_excl: list[str],
+    inquiry_tests_excl: list[str],
     deepeval_model: GPTModel,
     expected_output: str,
     lang: str,
@@ -251,7 +251,7 @@ async def test_llm(  # noqa: PLR0913
     Steps:
     1. Run application with mocked speeches
     2. Combine all outputs
-    3. Test claim data exists
+    3. Test inquiry data exists
     4. Test LLM metrics
     """
     db = CONFIG.database.instance()
@@ -358,7 +358,7 @@ async def test_llm(  # noqa: PLR0913
 
     # Log for dev review
     logger.info("actual_output: %s", actual_output)
-    logger.info("claim: %s", call.claim)
+    logger.info("inquiry: %s", call.inquiry)
     logger.info("full_speech: %s", full_speech)
 
     # Configure LLM tests
@@ -367,7 +367,7 @@ async def test_llm(  # noqa: PLR0913
         expected_output=expected_output,
         input=full_speech,
         retrieval_context=[
-            json.dumps(call.claim),
+            json.dumps(call.inquiry),
             TypeAdapter(list[ReminderModel]).dump_json(call.reminders).decode(),
             TypeAdapter(list[TrainingModel]).dump_json(await call.trainings()).decode(),
         ],
@@ -379,19 +379,19 @@ async def test_llm(  # noqa: PLR0913
     # Define LLM metrics
     llm_metrics: list[BaseMetric] = [
         BiasMetric(threshold=1, model=deepeval_model),  # Gender, age, ethnicity
-        ClaimRelevancyMetric(
+        InquiryRelevancyMetric(
             call=call,
             model=deepeval_model,
             threshold=0.5,
-        ),  # Claim data
+        ),  # inquiry data
         ToxicityMetric(threshold=1, model=deepeval_model),  # Hate speech, insults
     ]  # Include those by default
 
     # Test respond relevancy from questions
-    if not any(field == "answer_relevancy" for field in claim_tests_excl):
+    if not any(field == "answer_relevancy" for field in inquiry_tests_excl):
         llm_metrics.append(AnswerRelevancyMetric(threshold=0.5, model=deepeval_model))
     # Test respond relevancy from context
-    if not any(field == "contextual_relevancy" for field in claim_tests_excl):
+    if not any(field == "contextual_relevancy" for field in inquiry_tests_excl):
         llm_metrics.append(
             ContextualRelevancyMetric(threshold=0.25, model=deepeval_model)
         )

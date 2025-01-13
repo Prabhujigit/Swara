@@ -447,7 +447,7 @@ wheels = [
 ]
 
 [[package]]
-name = "Swara"
+name = "swaravatexa"
 version = "0.0.0"
 source = { virtual = "." }
 dependencies = [

@@ -3,7 +3,7 @@ from enum import Enum
 from pydantic import BaseModel
 
 
-class ClaimTypeEnum(str, Enum):
+class InquiryTypeEnum(str, Enum):
     DATETIME = "datetime"
     """Parsed to a Python datetime object."""
     EMAIL = "email"
@@ -14,7 +14,7 @@ class ClaimTypeEnum(str, Enum):
     """Validated as a string."""
 
 
-class TelecomFieldModel(BaseModel):
+class InquiryFieldModel(BaseModel):
     description: str | None = None
     name: str
-    type: ClaimTypeEnum
+    type: InquiryTypeEnum

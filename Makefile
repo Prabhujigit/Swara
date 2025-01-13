@@ -2,12 +2,12 @@
 version_full ?= $(shell $(MAKE) --silent version-full)
 version_small ?= $(shell $(MAKE) --silent version)
 # Dev tunnels configuration
-tunnel_name := call-center-ai-$(shell hostname | sed 's/[^a-zA-Z0-9]//g' | tr '[:upper:]' '[:lower:]')
+tunnel_name := swara-$(shell hostname | sed 's/[^a-zA-Z0-9]//g' | tr '[:upper:]' '[:lower:]')
 tunnel_url ?= $(shell res=$$(devtunnel show $(tunnel_name) | grep -o 'http[s]*://[^ ]*' | xargs) && echo $${res%/})
 # Container configuration
-container_name := ghcr.io/Prabhujigit/Swara
+container_name := ghcr.io/prabhujigit/swara
 docker := docker
-image_version := sha-4029c53
+image_version := sha-1b64c05
 
 # App location
 cognitive_communication_location := eastus
@@ -132,7 +132,7 @@ build:
 deploy:
 	$(MAKE) deploy-bicep
 
-	@echo "🚀 Call Center AI is running on $(app_url)"
+	@echo "🚀 Swara is running on $(app_url)"
 
 	@$(MAKE) deploy-post
 
@@ -142,17 +142,17 @@ deploy-bicep:
 
 	@echo "🛠️ Deploying resources..."
 	az deployment sub create \
-		--location $(default_location) \
-		--parameters \
-			'cognitiveCommunicationLocation=$(cognitive_communication_location)' \
-			'imageVersion=$(image_version)' \
-			'instance=$(name)' \
-			'openaiLocation=$(openai_location)' \
-			'promptContentFilter=$(prompt_content_filter)' \
-			'searchLocation=$(search_location)' \
-		--template-file cicd/bicep/main.bicep \
-	 	--name $(name_sanitized)
-
+    --location $(default_location) \
+    --parameters \
+        resourceGroupName=swaravatexa \
+        cognitiveCommunicationLocation=$(cognitive_communication_location) \
+        imageVersion=$(image_version) \
+        instance=$(name) \
+        openaiLocation=$(openai_location) \
+        promptContentFilter=$(prompt_content_filter) \
+        searchLocation=$(search_location) \
+    --template-file cicd/bicep/main.bicep \
+    --name $(name_sanitized)
 deploy-post:
 	@$(MAKE) copy-public \
 		name=$(blob_storage_public_name)
@@ -185,22 +185,24 @@ twilio-register:
 	twilio phone-numbers:update $(twilio_phone_number) \
 		--sms-url $(endpoint)/twilio/sms
 
-copy-public:
-	@echo "📦 Copying public resources..."
+copy-public: 
+	@echo "📦 Copying public resources..." 
+	az storage account keys list --account-name $(name_sanitized) --query '[0].value' -o tsv > .storage_key
 	az storage blob upload-batch \
 		--account-name $(name_sanitized) \
-		--auth-mode login \
+		--account-key $$(cat .storage_key) \
 		--destination '$$web' \
 		--no-progress \
 		--output none \
 		--overwrite \
 		--source public
+	rm .storage_key
 
 watch-call:
 	@echo "👀 Watching status of $(phone_number)..."
 	while true; do \
 		clear; \
-		curl -s "$(endpoint)/call?phone_number=%2B$(phone_number)" | yq --prettyPrint '.[0] | {"phone_number": .initiate.phone_number, "claim": .claim, "reminders": .reminders}'; \
+		curl -s "$(endpoint)/call?phone_number=%2B$(phone_number)" | yq --prettyPrint '.[0] | {"phone_number": .initiate.phone_number, "inquiry": .inquiry, "reminders": .reminders}'; \
 		sleep 3; \
 	done
 
