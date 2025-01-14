@@ -79,7 +79,7 @@ from app.persistence.azure_queue_storage import (
 
 # First log
 logger.info(
-    "swaravatexa v%s",  
+    "swaraaus v%s",  
     CONFIG.version,
 )
 

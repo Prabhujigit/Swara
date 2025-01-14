@@ -25,7 +25,7 @@ param resourceGroupName string
 param location string = deployment().location
 
 var tags = {
-  application: 'swaravatexa'
+  application: 'swaraaus'
   instance: instance
   managed_by: 'Bicep'
   sources: 'https://github.com/prabhujigit/swara'

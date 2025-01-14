@@ -21,9 +21,9 @@ param promptContentFilter bool
 param searchLocation string
 param tags object
 
-var appName = 'swaravatexa'
+var appName = 'swaraaus'
 var prefix = deployment().name
-var appUrl = 'https://swaravatexa.${acaEnv.properties.defaultDomain}'
+var appUrl = 'https://swaraaus.${acaEnv.properties.defaultDomain}'
 var llmFastModelFullName = toLower('${llmFastModel}-${llmFastVersion}')
 var llmSlowModelFullName = toLower('${llmSlowModel}-${llmSlowVersion}')
 var embeddingModelFullName = toLower('${embeddingModel}-${embeddingVersion}')

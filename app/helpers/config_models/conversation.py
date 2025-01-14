@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, create_model
 from pydantic.fields import FieldInfo
 
 from app.helpers.pydantic_types.phone_numbers import PhoneNumber
-from Swara.app.models.inquiry import InquiryFieldModel, InquiryTypeEnum
+from app.models.inquiry import InquiryFieldModel, InquiryTypeEnum
 
 
 class LanguageEntryModel(BaseModel):

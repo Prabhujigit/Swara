@@ -1,0 +1,15 @@
+fastapi
+azure-eventgrid
+azure-communication-callautomation
+azure-cosmos
+mistune
+opentelemetry-api
+deepeval
+langchain-openai
+aiojobs
+pytest
+pytest-assume
+pydantic
+uv
+Scheduler
+python-dotenv

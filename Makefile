@@ -7,13 +7,13 @@ tunnel_url ?= $(shell res=$$(devtunnel show $(tunnel_name) | grep -o 'http[s]*:/
 # Container configuration
 container_name := ghcr.io/prabhujigit/swara
 docker := docker
-image_version := sha-1b64c05
+image_version := sha-73778d7
 
 # App location
-cognitive_communication_location := eastus
-default_location := eastus
-openai_location := eastus
-search_location := eastus
+cognitive_communication_location := australiaeast
+default_location := australiaeast
+openai_location := australiaeast
+search_location := australiaeast
 # Sanitize variables
 name_sanitized := $(shell echo $(name) | tr '[:upper:]' '[:lower:]')
 # App configuration
@@ -144,7 +144,7 @@ deploy-bicep:
 	az deployment sub create \
     --location $(default_location) \
     --parameters \
-        resourceGroupName=swaravatexa \
+        resourceGroupName=swaraaus \
         cognitiveCommunicationLocation=$(cognitive_communication_location) \
         imageVersion=$(image_version) \
         instance=$(name) \

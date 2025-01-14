@@ -8,7 +8,7 @@ from app.helpers.call_events import (
     on_end_call,
     on_ivr_recognized,
 )
-from app.helpers.call_llm import _continue_chat
+from Swara.app.helpers.call_llm import _continue_chat
 from app.helpers.config import CONFIG
 from app.helpers.logging import logger
 from app.models.call import CallInitiateModel, CallStateModel

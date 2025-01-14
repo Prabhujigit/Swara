@@ -13,7 +13,7 @@
     "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
-  "updateContentCommand": "cd /workspaces/swaravatexa make brew upgrade install",
+  "updateContentCommand": "cd /workspaces/swaraaus make brew upgrade install",
   "customizations": {
     "vscode": {
       "extensions": [

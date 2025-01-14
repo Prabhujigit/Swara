@@ -11,7 +11,7 @@ from opentelemetry.trace.span import INVALID_SPAN
 from opentelemetry.util.types import AttributeValue
 from structlog.contextvars import bind_contextvars, get_contextvars
 
-MODULE_NAME = "swaravatexa-monitor"
+MODULE_NAME = "swaraaus-monitor"
 VERSION = environ.get("VERSION", "0.0.0-unknown")
 
 
